@@ -11,10 +11,12 @@ class VerImagenes extends Component
     use WithFileUploads;
 
     protected $listeners  = ['destroy'];
+    public $paginateNumber     = 5;
+    public $orderBy            = 3;
+    public $selected_id, $keyWord;
 
     public $paciente_id, $url_imagen;
-
-    public function mount( $paciente_id )
+        public function mount( $paciente_id )
     {
         $this->paciente_id = $paciente_id;
     }
