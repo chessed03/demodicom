@@ -15,18 +15,22 @@ class Pacientes extends Component
     public $paginateNumber     = 5;
     public $orderBy            = 3;
     public $updateMode         = false;
-    public $selected_id, $keyWord, $nombre, $apellidos, $correo;
+    public $selected_id, $keyWord, $sucursal_id_search, $sucursal_id, $nombre, $apellidos, $correo;
 
     public function render()
     {
 
-        $keyWord        = '%'.$this->keyWord .'%';
+        $sucursal_id_search = $this->sucursal_id_search;
 
-        $paginateNumber = $this->paginateNumber;
+        $keyWord            = '%'.$this->keyWord .'%';
 
-        $orderBy        = intval($this->orderBy);
+        $paginateNumber     = $this->paginateNumber;
 
-        $pacientes     = Paciente::getDataForPacientesView( $keyWord, $paginateNumber, $orderBy );
+        $orderBy            = intval($this->orderBy);
+
+        $sucursales         = Paciente::getDataSucursalesActives();
+
+        $pacientes          = Paciente::getDataForPacientesView( $sucursal_id_search, $keyWord, $paginateNumber, $orderBy );
 
         if ( $paginateNumber > count($pacientes) ) {
 
@@ -35,7 +39,8 @@ class Pacientes extends Component
         }
 
         return view('livewire.pacientes.view', [
-            'pacientes' => $pacientes
+            'pacientes'  => $pacientes,
+            'sucursales' => $sucursales
         ]);
     }
 
@@ -50,6 +55,7 @@ class Pacientes extends Component
     {
         $this->resetErrorBag();
         $this->resetValidation();
+        $this->emit('select2');
     }
 
     public function cancel()
@@ -64,18 +70,20 @@ class Pacientes extends Component
     private function resetInput()
     {
 
-        $this->nombre    = null;
-        $this->apellidos = null;
-        $this->correo    = null;
+        $this->sucursal_id = null;
+        $this->nombre      = null;
+        $this->apellidos   = null;
+        $this->correo      = null;
 
     }
 
     public function store()
     {
         $this->validate([
-            'nombre'    => 'required',
-            'apellidos' => 'required',
-            'correo'    => 'required',
+            'sucursal_id' => 'required',
+            'nombre'      => 'required',
+            'apellidos'   => 'required',
+            'correo'      => 'required',
         ]);
 
         $validateNewPacienteNoRepeat = Paciente::validateNewPacienteNoRepeat( null, $this->correo );
@@ -83,16 +91,17 @@ class Pacientes extends Component
         if ( $validateNewPacienteNoRepeat ) {
 
             Paciente::create([
-                'nombre'    => $this->nombre,
-                'apellidos' => $this->apellidos,
-                'correo'    => $this->correo
+                'sucursal_id' => $this->sucursal_id,
+                'nombre'      => $this->nombre,
+                'apellidos'   => $this->apellidos,
+                'correo'      => $this->correo
             ]);
 
             $this->messageAlert('Éxito!', 'Paciente creado.','success');
 
         } else {
 
-            $this->messageAlert('Error!', 'Ya existe un paciente con el nombre ingresado.','error');
+            $this->messageAlert('Error!', 'Ya existe un paciente con el correo ingresado.','error');
 
         }
 
@@ -103,13 +112,14 @@ class Pacientes extends Component
 
     public function edit($id)
     {
-        $record             = Paciente::findOrFail($id);
+        $record            = Paciente::findOrFail($id);
 
-        $this->selected_id  = $id;
+        $this->selected_id = $id;
 
-        $this->nombre       = $record->nombre;
-        $this->apellidos    = $record->apellidos;
-        $this->correo       = $record->correo;
+        $this->sucursal_id = $record->sucursal_id;
+        $this->nombre      = $record->nombre;
+        $this->apellidos   = $record->apellidos;
+        $this->correo      = $record->correo;
 
         $this->updateMode   = true;
     }
@@ -117,9 +127,10 @@ class Pacientes extends Component
     public function update()
     {
         $this->validate([
-            'nombre'    => 'required',
-            'apellidos' => 'required',
-            'correo'    => 'required',
+            'sucursal_id' => 'required',
+            'nombre'      => 'required',
+            'apellidos'   => 'required',
+            'correo'      => 'required',
         ]);
 
         if ($this->selected_id) {
@@ -131,9 +142,10 @@ class Pacientes extends Component
                 $record = Paciente::find($this->selected_id);
 
                 $record->update([
-                    'nombre'    => $this->nombre,
-                    'apellidos' => $this->apellidos,
-                    'correo'    => $this->correo
+                    'sucursal_id' => $this->sucursal_id,
+                    'nombre'      => $this->nombre,
+                    'apellidos'   => $this->apellidos,
+                    'correo'      => $this->correo
                 ]);
 
                 $this->messageAlert('Éxito!', 'Paciente actualizado.','success');

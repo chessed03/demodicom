@@ -20,6 +20,8 @@
     <link href="{{ asset('template/libs/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/libs/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/libs/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/libs/daterangepicker/daterangepicker.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- App css -->
     <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -103,11 +105,15 @@
                             </li>
 
                             <li>
+                                <a href="{{ route('demo-sucursales') }}">Sucursales</a>
+                            </li>
+
+                            <li>
                                 <a href="{{ route('demo-pacientes') }}">Pacientes</a>
                             </li>
 
                             <li>
-                                <a href="{{ route('demo-imagenes') }}">Imágenes</a>
+                                <a href="{{ route('demo-expediente') }}">Expediente</a>
                             </li>
 
                         </ul>
@@ -271,6 +277,9 @@
 <script src="{{ asset('template/libs/bootstrap-select/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('template/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
 <script src="{{ asset('template/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
+<script src="{{ asset('template/libs/moment/moment.min.js') }}"></script>
+<script src="{{ asset('template/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('template/libs/daterangepicker/daterangepicker.js') }}"></script>
 
 <!-- App js -->
 <script src="{{ asset('template/js/app.min.js') }}"></script>

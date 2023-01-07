@@ -13,7 +13,7 @@ class VerImagenes extends Component
     protected $listeners  = ['destroy'];
     public $paginateNumber     = 5;
     public $orderBy            = 3;
-    public $selected_id, $keyWord;
+    public $selected_id, $date_search_initial, $date_search_final, $keyWord;
 
     public $paciente_id, $url_imagen;
         public function mount( $paciente_id )
@@ -23,9 +23,13 @@ class VerImagenes extends Component
 
     public function render()
     {
+        $date_search_initial = $this->date_search_initial;
+
+        $date_search_final   = $this->date_search_final;
+
         $paciente = Imagen::pacienteIdDatos($this->paciente_id);
 
-        $imagenes = Imagen::pacienteIdImagenes($this->paciente_id);
+        $imagenes = Imagen::pacienteIdImagenes($this->paciente_id, $date_search_initial, $date_search_final);
 
         return view('livewire.imagenes.ver-imagenes',[
             'paciente' => $paciente,

@@ -34,7 +34,19 @@
                 @include('livewire.pacientes.update')
 
                 <div class="row pt-3">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" wire:ignore>
+                        <label>Sucursal</label>
+                        <select wire:model="sucursal_id_search" id="sucursal_id_search" data-model="sucursal_id_search" class="form-control select2">
+                            <option value="" selected></option>
+                            @foreach( $sucursales as $sucursal )
+                                <option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <label>&nbsp;</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <button class="btn btn-secondary waves-effect waves-light" type="button"><i class="bx bx-fw bx-search-alt bx-xs"></i> Búsqueda</button>
@@ -42,7 +54,9 @@
                             <input type="text" wire:model='keyWord' name="search" id="search" class="form-control">
                         </div>
                     </div>
+
                     <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                        <label>&nbsp;</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <button class="btn btn-secondary waves-effect waves-light" type="button"><i class="bx bx-fw bx-list-ol bx-xs"></i> Ordenar</button>
@@ -56,6 +70,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                        <label>&nbsp;</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <button class="btn btn-secondary waves-effect waves-light" type="button"><i class="bx bx-fw bx-poll bx-xs"></i> Mostrando</button>
@@ -80,6 +95,7 @@
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>Correo</th>
+                            <th>Sucursal</th>
                             <th class="text-center">Acciones</th>
                         </tr>
                         </thead>
@@ -101,6 +117,10 @@
 
                                 <td style="width: 25%;">
                                     <h5 class="m-0 font-weight-normal">{{ $row->correo }}</h5>
+                                </td>
+
+                                <td style="width: 25%;">
+                                    <h5 class="m-0 font-weight-normal">{{ $row->nombre_sucursal }}</h5>
                                 </td>
 
                                 <td class="text-center" style="width: 20%;">
@@ -182,6 +202,35 @@
             })
 
         }
+
+        window.initSelectCustomerSelect=()=>{
+
+            $('.select2').select2({
+                placeholder: 'Selecciona una opción',
+                width: '100%'
+            });
+
+        }
+
+        initSelectCustomerSelect();
+
+        $('.select2').on('change', function (e) {
+
+            let item = $(this).attr('id');
+
+            let model = $(this).attr('data-model');
+
+            let data = $('#' + item).select2('val');
+
+            @this.set(model, data);
+
+        });
+
+        window.livewire.on('select2',()=>{
+
+            initSelectCustomerSelect();
+
+        });
 
     </script>
 

@@ -9,10 +9,10 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Demo</a></li>
-                        <li class="breadcrumb-item active">Pacientes</li>
+                        <li class="breadcrumb-item active">Expedientes</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Imágenes</h4>
+                <h4 class="page-title">Expedientes</h4>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
             <div class="card-box">
 
                 <div class="row justify-content-between">
-                    <h4 class="header-title mb-3">Lista de imagenes</h4>
+                    <h4 class="header-title mb-3">Lista de expedientes</h4>
 
                     <button type="button" class="btn btn-success btn-rounded waves-effect" data-toggle="modal" data-target="#createModal"><i class="bx bx-fw bxs-plus-circle bx-xs"></i> Agregar imágen </button>
                 </div>
@@ -33,7 +33,19 @@
                 @include('livewire.imagenes.create')
 
                 <div class="row pt-3">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" wire:ignore>
+                        <label>Sucursal</label>
+                        <select wire:model="sucursal_id_search" id="sucursal_id_search" data-model="sucursal_id_search" class="form-control select2">
+                            <option value="" selected></option>
+                            @foreach( $sucursales as $sucursal )
+                                <option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <label>&nbsp;</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <button class="btn btn-secondary waves-effect waves-light" type="button"><i class="bx bx-fw bx-search-alt bx-xs"></i> Búsqueda</button>
@@ -42,6 +54,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                        <label>&nbsp;</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <button class="btn btn-secondary waves-effect waves-light" type="button"><i class="bx bx-fw bx-list-ol bx-xs"></i> Ordenar</button>
@@ -55,6 +68,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                        <label>&nbsp;</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <button class="btn btn-secondary waves-effect waves-light" type="button"><i class="bx bx-fw bx-poll bx-xs"></i> Mostrando</button>
@@ -102,8 +116,8 @@
                                     <img src="{{ asset('template/images/users/user-1.jpg') }}" class="img-responsive rounded-circle img-thumbnail" alt="user">
                                 </div>
                                 <div class="text-right">
-                                    <h2 class="mt-3 pt-1 mb-1"> {{ $row->numero_imagenes }} </h2>
-                                    <p class="text-muted mb-0">Imágenes</p>
+                                    <h2 class="mt-3 pt-1 mb-1"> <span class="font-13 text-muted">Imágenes  </span>{{ $row->numero_imagenes }} </h2>
+                                    <p class="mb-0 font-16"> <span class="font-13 text-muted">Sucursal  </span> {{ $row->nombre_sucursal }}</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

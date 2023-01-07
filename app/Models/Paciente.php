@@ -12,37 +12,55 @@ class Paciente extends Model
 
     protected $table = 'pacientes';
 
-    protected $fillable = ['nombre','apellidos','correo', 'status'];
+    protected $fillable = ['sucursal_id','nombre','apellidos','correo', 'status'];
 
-    public static function getDataForPacientesView( $keyWord, $paginateNumber, $orderBy )
+    public static function getDataForPacientesView( $sucursal_id_search, $keyWord, $paginateNumber, $orderBy )
     {
         $query = DB::table('pacientes');
 
-        $query->whereRaw('nombre LIKE "' . $keyWord . '"');
+        $query->select(
+            DB::raw('
+                pacientes.id as id,
+                pacientes.nombre as nombre,
+                pacientes.apellidos as apellidos,
+                pacientes.correo as correo,
+                sucursales.nombre as nombre_sucursal
+            ')
+        );
 
-        $query->whereRaw('status = 1');
+        $query->leftJoin('sucursales', 'pacientes.sucursal_id', '=', 'sucursales.id');
+
+        $query->whereRaw('pacientes.nombre LIKE "' . $keyWord . '"');
+
+        $query->whereRaw('pacientes.status = 1');
+
+        if ( $sucursal_id_search ) {
+
+            $query->whereRaw('sucursales.id = "' . $sucursal_id_search . '"');
+
+        }
 
         if ( $orderBy == 1 ) {
 
-            $query->orderByRaw('nombre ASC');
+            $query->orderByRaw('pacientes.nombre ASC');
 
         }
 
         if ( $orderBy == 2 ) {
 
-            $query->orderByRaw('nombre DESC');
+            $query->orderByRaw('pacientes.nombre DESC');
 
         }
 
         if ( $orderBy == 3 ) {
 
-            $query->orderByRaw('created_at DESC');
+            $query->orderByRaw('pacientes.created_at DESC');
 
         }
 
         if ( $orderBy == 4 ) {
 
-            $query->orderByRaw('created_at ASC');
+            $query->orderByRaw('pacientes.created_at ASC');
 
         }
 
@@ -94,6 +112,18 @@ class Paciente extends Model
         }
 
         return $result;
+    }
+
+    public static function getDataSucursalesActives()
+    {
+
+        $query = DB::table('sucursales')
+            ->whereRaw('status = 1');
+
+        $result = $query->get();
+
+        return $result;
+
     }
 
 }

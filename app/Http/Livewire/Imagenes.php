@@ -18,24 +18,29 @@ class Imagenes extends Component
     public $orderBy            = 3;
     public $updateMode         = false;
 
-    public $selected_id, $keyWord, $paciente_id, $url_imagen;
+    public $selected_id, $keyWord, $sucursal_id_search, $paciente_id, $url_imagen;
 
     public function render()
     {
 
-        $keyWord        = '%'.$this->keyWord .'%';
+        $sucursal_id_search = $this->sucursal_id_search;
 
-        $paginateNumber = $this->paginateNumber;
+        $keyWord            = '%'.$this->keyWord .'%';
 
-        $orderBy        = intval($this->orderBy);
+        $paginateNumber     = $this->paginateNumber;
 
-        $pacientes      = Imagen::getPacientesActives();
+        $orderBy            = intval($this->orderBy);
 
-        $imagenes       = Imagen::getDataForImagenesView( $keyWord, $paginateNumber, $orderBy );
-        
+        $sucursales         = Imagen::getDataSucursalesActives();
+
+        $pacientes          = Imagen::getPacientesActives();
+
+        $imagenes           = Imagen::getDataForImagenesView( $sucursal_id_search, $keyWord, $paginateNumber, $orderBy );
+
         return view('livewire.imagenes.view', [
-            'imagenes'  => $imagenes,
-            'pacientes' => $pacientes
+            'imagenes'   => $imagenes,
+            'pacientes'  => $pacientes,
+            'sucursales' => $sucursales
         ]);
     }
 

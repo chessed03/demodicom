@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div wire:ignore.self class="modal fade bs-create-data-modal" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true" style="display: none;">
+<div wire:ignore.self class="modal fade bs-create-data-modal" id="createModal" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,6 +13,20 @@
                     *Campos requeridos.
                 </p>
                 <form>
+
+                    <div class="form-group">
+                        <label for="sucursal_id_create">Sucursal*</label>
+                        <div wire:ignore>
+                            <select wire:model="sucursal_id" id="sucursal_id_create" data-model="sucursal_id" class="form-control select2">
+                                <option value="" selected></option>
+                                @foreach( $sucursales as $sucursal )
+                                    <option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('sucursal_id') <span class="error text-danger">{{ $message }}</span> @enderror
+                    </div>
+
                     <div class="form-group">
                         <label for="nombre">Nombre*</label>
                         <input wire:model="nombre" id="nombre" type="text" class="form-control" placeholder="Nombre">@error('nombre') <span class="error text-danger">{{ $message }}</span> @enderror

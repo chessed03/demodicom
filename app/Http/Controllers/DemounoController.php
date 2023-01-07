@@ -12,12 +12,17 @@ class DemounoController extends Controller
         return view('demouno.index');
     }
 
+    public function sucursales( Request $request )
+    {
+        return view('demouno.sucursales.index');
+    }
+
     public function pacientes( Request $request )
     {
         return view('demouno.pacientes.index');
     }
 
-    public function imagenes( Request $request )
+    public function expediente( Request $request )
     {
         return view('demouno.imagenes.index');
     }

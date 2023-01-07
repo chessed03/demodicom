@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div wire:ignore.self class="modal fade bs-update-data-modal" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true" style="display: none;">
+<div wire:ignore.self class="modal fade bs-update-data-modal" id="updateModal" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,6 +14,19 @@
                 </p>
                 <form>
                     <input type="hidden" wire:model="selected_id">
+
+                    <div class="form-group">
+                        <label for="sucursal_id_update">Sucursal*</label>
+                        <div wire:ignore>
+                            <select wire:model="sucursal_id" id="sucursal_id_update" data-model="sucursal_id" class="form-control select2">
+                                <option value="" selected></option>
+                                @foreach( $sucursales as $sucursal )
+                                    <option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('sucursal_id') <span class="error text-danger">{{ $message }}</span> @enderror
+                    </div>
 
                     <div class="form-group">
                         <label for="nombre">Nombre*</label>
